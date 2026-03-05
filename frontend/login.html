@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DentalAI — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:      #060810;
+    --surface: #0d1117;
+    --surface2:#161b27;
+    --border:  #1e2535;
+    --accent:  #00e5ff;
+    --green:   #00ff87;
+    --muted:   #64748b;
+    --text:    #e2e8f0;
+    --red:     #f43f5e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    animation: gridMove 20s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes gridMove {
+    0%   { background-position: 0 0; }
+    100% { background-position: 44px 44px; }
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .orb1 {
+    width: 400px; height: 400px;
+    background: rgba(0,229,255,0.07);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+
+  .orb2 {
+    width: 300px; height: 300px;
+    background: rgba(0,255,135,0.05);
+    bottom: -80px; right: -80px;
+    animation-delay: 4s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-30px); }
+  }
+
+  /* Scan line effect */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Main card — landscape */
+  .card {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 860px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--accent);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(0,229,255,0.05),
+      0 24px 80px rgba(0,0,0,0.6),
+      0 0 60px rgba(0,229,255,0.04);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  /* Left panel — branding */
+  .card-left {
+    background: linear-gradient(160deg, #060d1a 0%, #0a1628 60%, #060d1a 100%);
+    border-right: 1px solid var(--border);
+    padding: 48px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-left::before {
+    content: '🦷';
+    position: absolute;
+    font-size: 180px;
+    bottom: -20px;
+    right: -20px;
+    opacity: 0.05;
+    filter: grayscale(1);
+  }
+
+  .card-left-top { position: relative; z-index: 1; }
+  .card-left-bottom { position: relative; z-index: 1; }
+
+  .left-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .left-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  .left-title span { color: var(--accent); }
+
+  .left-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .left-features { display: flex; flex-direction: column; gap: 10px; }
+
+  .feat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .feat-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  .left-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 5px 12px;
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 4px;
+    color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+
+  /* Right panel — form */
+  .card-right {
+    padding: 44px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Logo */
+  .logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .logo-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(0,229,255,0.4)); }
+    50%       { filter: drop-shadow(0 0 20px rgba(0,229,255,0.8)); }
+  }
+
+  .logo-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+
+  .logo-title span { color: var(--accent); }
+
+  .logo-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 0 28px;
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 12px 14px 12px 40px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  input::placeholder { color: var(--muted); font-weight: 400; }
+
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,229,255,0.08), 0 0 16px rgba(0,229,255,0.1);
+  }
+
+  input.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(244,63,94,0.08);
+  }
+
+  /* Role selector */
+  .role-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .role-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    padding: 10px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .role-btn:hover {
+    border-color: rgba(0,229,255,0.3);
+    color: var(--accent);
+  }
+
+  .role-btn.active {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.08);
+    color: var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,255,0.1);
+  }
+
+  .role-icon { display: block; font-size: 18px; margin-bottom: 4px; }
+
+  /* Remember + forgot */
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .remember input[type=checkbox] {
+    width: 15px; height: 15px;
+    accent-color: var(--accent);
+    padding: 0;
+    border: none;
+  }
+
+  .forgot {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .forgot:hover { opacity: 1; }
+
+  /* Login button */
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.1s;
+  }
+
+  .btn-login::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+
+  .btn-login:hover::before { transform: translateX(100%); }
+  .btn-login:hover { box-shadow: 0 0 32px rgba(0,229,255,0.5); transform: translateY(-1px); }
+  .btn-login:active { transform: translateY(0); }
+  .btn-login:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* Loading state */
+  .btn-login.loading {
+    background: var(--surface2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    pointer-events: none;
+  }
+
+  /* Error message */
+  .error-msg {
+    background: rgba(244,63,94,0.08);
+    border: 1px solid rgba(244,63,94,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+    margin-bottom: 18px;
+    display: none;
+    animation: shake 0.4s ease;
+  }
+
+  .error-msg.show { display: block; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%,60%  { transform: translateX(-6px); }
+    40%,80%  { transform: translateX(6px); }
+  }
+
+  /* Success state */
+  .success-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    z-index: 20;
+  }
+
+  .success-overlay.show { opacity: 1; pointer-events: all; }
+
+  .success-icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+  }
+
+  .success-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .success-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* Bottom link */
+  .bottom-link {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .bottom-link a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Corner decorations */
+  .corner {
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--accent);
+    border-style: solid;
+    opacity: 0.4;
+  }
+
+  .corner-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
+  .corner-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
+  .corner-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
+  .corner-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
+
+  /* Version tag */
+  .version-tag {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--border);
+    letter-spacing: 1px;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="card">
+  <!-- Corner decorations -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- Success overlay -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-icon">✅</div>
+    <div class="success-title">ACCESS GRANTED</div>
+    <div class="success-sub">Redirecting to dashboard...</div>
+  </div>
+
+  <!-- Left: Branding -->
+  <div class="card-left">
+    <div class="card-left-top">
+      <div class="left-eyebrow">// GITAM Hackathon · Use Case 2</div>
+      <div class="left-title">Dental<span>AI</span><br/>System</div>
+      <p class="left-desc">
+        AI-powered panoramic radiograph analysis. Segment teeth, assign FDI numbers,
+        detect anomalies — in seconds.
+      </p>
+      <div class="left-features">
+        <div class="feat-item"><div class="feat-dot"></div>FDI Tooth Numbering (1–32)</div>
+        <div class="feat-item"><div class="feat-dot"></div>Implant Condition Classification</div>
+        <div class="feat-item"><div class="feat-dot"></div>Missing Tooth Detection</div>
+        <div class="feat-item"><div class="feat-dot"></div>Anomaly & Bone Loss Flagging</div>
+        <div class="feat-item"><div class="feat-dot"></div>Downloadable Diagnostic Report</div>
+      </div>
+    </div>
+    <div class="card-left-bottom">
+      <div class="left-badge">TensorFlow · FastAPI · OpenCV</div>
+    </div>
+  </div>
+
+  <!-- Right: Form -->
+  <div class="card-right">
+
+    <div class="logo" style="text-align:left; margin-bottom:24px;">
+      <div class="logo-title" style="font-size:20px;">Welcome Back</div>
+      <div class="logo-sub">Sign in to access the dashboard</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Role selector -->
+    <label>Select Role</label>
+    <div class="role-row">
+      <div class="role-btn active" onclick="selectRole(this, 'radiologist')">
+        <span class="role-icon">🔬</span>Radiologist
+      </div>
+      <div class="role-btn" onclick="selectRole(this, 'admin')">
+        <span class="role-icon">🛡️</span>Admin
+      </div>
+    </div>
+
+    <!-- Error message -->
+    <div class="error-msg" id="errorMsg">
+      ⚠ Invalid credentials. Please try again.
+    </div>
+
+    <!-- Form -->
+    <div class="form-group">
+      <label>Email / Staff ID</label>
+      <div class="input-wrap">
+        <span class="input-icon">✉</span>
+        <input type="text" id="username" placeholder="doctor@hospital.com" autocomplete="off"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <div class="input-wrap">
+        <span class="input-icon">🔒</span>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="off"/>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <label class="remember">
+        <input type="checkbox" id="remember"/> Remember me
+      </label>
+      <a href="#" class="forgot">Forgot password?</a>
+    </div>
+
+    <button class="btn-login" id="loginBtn" onclick="handleLogin()">
+      ENTER SYSTEM
+    </button>
+
+    <div class="bottom-link">
+      Don't have access? <a href="#">Request Access →</a>
+    </div>
+
+  </div>
+</div>
+
+<div class="version-tag">DENTALAI v1.0 · GITAM HACKATHON</div>
+
+<script>
+  let selectedRole = 'radiologist';
+
+  function selectRole(el, role) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedRole = role;
+  }
+
+  function handleLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const btn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    // Reset errors
+    errorMsg.classList.remove('show');
+    usernameInput.classList.remove('error');
+    passwordInput.classList.remove('error');
+
+    // Basic validation
+    if (!username || !password) {
+      errorMsg.textContent = '⚠ Please fill in all fields.';
+      errorMsg.classList.add('show');
+      if (!username) usernameInput.classList.add('error');
+      if (!password) passwordInput.classList.add('error');
+      return;
+    }
+
+    // Loading state
+    btn.classList.add('loading');
+    btn.textContent = '// AUTHENTICATING...';
+
+    // Simulate auth (replace with real API call)
+    setTimeout(() => {
+      // Demo credentials: any email + password "dental123"
+      if (password === 'dental123' || password.length >= 4) {
+        // Success
+        document.getElementById('successOverlay').classList.add('show');
+        setTimeout(() => {
+          // Save role and redirect to patient details
+          sessionStorage.setItem('userRole', selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1));
+          window.location.href = 'patient-details.html';
+        }, 2000);
+      } else {
+        // Fail
+        btn.classList.remove('loading');
+        btn.textContent = 'ENTER SYSTEM';
+        errorMsg.textContent = '⚠ Invalid credentials. Please try again.';
+        errorMsg.classList.add('show');
+        usernameInput.classList.add('error');
+        passwordInput.classList.add('error');
+      }
+    }, 1800);
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
+</script>
+</body>
+</html>

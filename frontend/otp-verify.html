@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DentalAI — OTP Verification</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#060810;--surface:#0d1117;--surface2:#161b27;--border:#1e2535;--accent:#00e5ff;--green:#00ff87;--yellow:#fbbf24;--red:#f43f5e;--muted:#64748b;--text:#e2e8f0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+.topbar{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:1px;}
+.logo span{color:var(--accent);}
+.user-pill{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.user-dot{width:28px;height:28px;background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}
+.progress-wrap{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:16px 40px;}
+.progress-steps{display:flex;align-items:center;max-width:800px;margin:0 auto;}
+.step{display:flex;align-items:center;gap:8px;}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#000;}
+.step.active .step-num{background:var(--accent);border-color:var(--accent);color:#000;box-shadow:0 0 12px rgba(0,229,255,0.4);}
+.step-label{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);white-space:nowrap;}
+.step.active .step-label{color:var(--accent);}
+.step.done  .step-label{color:var(--green);}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;}
+.step-line.done{background:var(--green);}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;position:relative;z-index:1;}
+.card{width:100%;max-width:460px;background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--accent);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5);position:relative;}
+.corner{position:absolute;width:12px;height:12px;border-color:var(--accent);border-style:solid;opacity:0.3;}
+.corner-tl{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+.corner-tr{top:-1px;right:-1px;border-width:2px 2px 0 0;}
+.corner-bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px;}
+.corner-br{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+.card-header{padding:32px 36px 0;text-align:center;}
+.otp-icon{font-size:44px;margin-bottom:12px;display:block;animation:glow 2s ease-in-out infinite;}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 8px rgba(0,229,255,0.3))}50%{filter:drop-shadow(0 0 20px rgba(0,229,255,0.7))}}
+.card-eyebrow{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:8px;}
+.card-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px;}
+.card-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.mobile-display{display:inline-block;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);padding:4px 12px;border-radius:6px;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 36px;opacity:0.3;}
+.card-body{padding:28px 36px;}
+.otp-hint{background:rgba(0,255,135,0.06);border:1px solid rgba(0,255,135,0.2);border-radius:8px;padding:12px 16px;margin-bottom:24px;display:flex;align-items:center;gap:10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--green);}
+.otp-hint-code{font-size:20px;font-weight:700;letter-spacing:4px;}
+.otp-inputs{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+.otp-box{width:56px;height:60px;background:var(--surface2);border:2px solid var(--border);border-radius:10px;color:var(--text);font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;text-align:center;outline:none;transition:all 0.2s;}
+.otp-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,229,255,0.12);}
+.otp-box.filled{border-color:rgba(0,229,255,0.4);color:var(--accent);}
+.otp-box.error{border-color:var(--red);animation:shake 0.4s ease;}
+.otp-box.success{border-color:var(--green);color:var(--green);background:rgba(0,255,135,0.06);}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.err-msg{font-family:'DM Mono',monospace;font-size:11px;color:var(--red);text-align:center;margin-bottom:12px;display:none;}
+.err-msg.show{display:block;}
+.btn-primary{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;overflow:hidden;position:relative;transition:box-shadow 0.2s;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%);transition:transform 0.4s;}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-primary:hover{box-shadow:0 0 28px rgba(0,229,255,0.4);}
+.resend-row{text-align:center;margin-top:16px;font-size:13px;color:var(--muted);}
+.resend-btn{background:none;border:none;color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;opacity:0.7;}
+.resend-btn:hover{opacity:1;}
+.resend-btn:disabled{color:var(--muted);cursor:not-allowed;opacity:1;}
+.timer{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.back-btn{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;margin-top:12px;display:block;width:100%;text-align:center;}
+.back-btn:hover{color:var(--accent);}
+.success-overlay{position:absolute;inset:0;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;opacity:0;pointer-events:none;transition:opacity 0.4s;z-index:20;border-radius:16px;}
+.success-overlay.show{opacity:1;pointer-events:all;}
+.success-icon{font-size:52px;animation:popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+.success-title{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--green);letter-spacing:1px;}
+.success-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'DM Mono',monospace;font-size:10px;color:var(--border);letter-spacing:1px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">Dental<span>AI</span></div>
+  <div class="user-pill"><div class="user-dot">🔬</div>Dr. Sharma · Radiologist</div>
+</div>
+<div class="progress-wrap">
+  <div class="progress-steps">
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">Login</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">Patient Details</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-num">3</div><div class="step-label">OTP Verify</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">4</div><div class="step-label">Upload OPG</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">Analysis</div></div>
+  </div>
+</div>
+<div class="main">
+  <div class="card">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-icon">✅</div>
+      <div class="success-title">VERIFIED</div>
+      <div class="success-sub">Redirecting to upload...</div>
+    </div>
+    <div class="card-header">
+      <span class="otp-icon">📲</span>
+      <div class="card-eyebrow">// Step 3 of 5</div>
+      <div class="card-title">OTP Verification</div>
+      <div class="card-sub">A 4-digit OTP has been sent to<br/><span class="mobile-display" id="mobileDisplay">+91 XXXXXXXXXX</span></div>
+    </div>
+    <div class="divider"></div>
+    <div class="card-body">
+      <div class="otp-hint">
+        <span>🔑 Demo OTP:</span>
+        <span class="otp-hint-code" id="otpHintCode">----</span>
+        <span style="color:var(--muted);font-size:9px;">(remove before deploy)</span>
+      </div>
+      <div class="otp-inputs">
+        <input class="otp-box" id="otp0" type="text" maxlength="1" inputmode="numeric"/>
+        <input class="otp-box" id="otp1" type="text" maxlength="1" inputmode="numeric"/>
+        <input class="otp-box" id="otp2" type="text" maxlength="1" inputmode="numeric"/>
+        <input class="otp-box" id="otp3" type="text" maxlength="1" inputmode="numeric"/>
+      </div>
+      <div class="err-msg" id="errMsg">Invalid OTP. Please try again.</div>
+      <button class="btn-primary" onclick="verifyOTP()">VERIFY OTP</button>
+      <div class="resend-row">
+        Didn't receive it?
+        <button class="resend-btn" id="resendBtn" onclick="resendOTP()" disabled>Resend OTP</button>
+        <span class="timer" id="timer">in 30s</span>
+      </div>
+      <button class="back-btn" onclick="window.location.href='patient-details.html'">← Back to patient details</button>
+    </div>
+  </div>
+</div>
+<footer>DENTALAI v1.0 · GITAM HACKATHON 2025</footer>
+<script>
+const patient = JSON.parse(sessionStorage.getItem('patientData')||'{}');
+let otp = sessionStorage.getItem('mockOTP')||'1234';
+document.getElementById('mobileDisplay').textContent = patient.mobile||'+91 XXXXXXXXXX';
+document.getElementById('otpHintCode').textContent = otp;
+const boxes = [0,1,2,3].map(i=>document.getElementById('otp'+i));
+boxes.forEach((box,i)=>{
+  box.addEventListener('input',e=>{
+    const val=e.target.value.replace(/\D/g,'');
+    box.value=val;
+    box.classList.toggle('filled',val!=='');
+    if(val&&i<3)boxes[i+1].focus();
+    clearErr();
+  });
+  box.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&!box.value&&i>0){boxes[i-1].focus();boxes[i-1].value='';boxes[i-1].classList.remove('filled');}
+  });
+  box.addEventListener('paste',e=>{
+    const p=e.clipboardData.getData('text').replace(/\D/g,'').slice(0,4);
+    p.split('').forEach((ch,j)=>{if(boxes[j]){boxes[j].value=ch;boxes[j].classList.add('filled');}});
+    if(p.length===4)verifyOTP();
+    e.preventDefault();
+  });
+});
+boxes[0].focus();
+function clearErr(){document.getElementById('errMsg').classList.remove('show');boxes.forEach(b=>b.classList.remove('error'));}
+function verifyOTP(){
+  const entered=boxes.map(b=>b.value).join('');
+  if(entered.length<4){document.getElementById('errMsg').textContent='Please enter all 4 digits.';document.getElementById('errMsg').classList.add('show');return;}
+  if(entered===otp){
+    boxes.forEach(b=>b.classList.add('success'));
+    document.getElementById('successOverlay').classList.add('show');
+    setTimeout(()=>window.location.href='upload-opg.html',1800);
+  } else {
+    boxes.forEach(b=>b.classList.add('error'));
+    document.getElementById('errMsg').textContent='Invalid OTP. Please try again.';
+    document.getElementById('errMsg').classList.add('show');
+    setTimeout(()=>{boxes.forEach(b=>{b.classList.remove('error');b.value='';b.classList.remove('filled');});boxes[0].focus();},800);
+  }
+}
+let timeLeft=30;
+const timerEl=document.getElementById('timer');
+const resendBtn=document.getElementById('resendBtn');
+const cd=setInterval(()=>{timeLeft--;timerEl.textContent=timeLeft>0?'in '+timeLeft+'s':'';if(timeLeft<=0){clearInterval(cd);resendBtn.disabled=false;timerEl.textContent='';}},1000);
+function resendOTP(){
+  otp=Math.floor(1000+Math.random()*9000).toString();
+  sessionStorage.setItem('mockOTP',otp);
+  document.getElementById('otpHintCode').textContent=otp;
+  boxes.forEach(b=>{b.value='';b.classList.remove('filled','error','success');});
+  boxes[0].focus();clearErr();
+  resendBtn.disabled=true;timeLeft=30;timerEl.textContent='in 30s';
+  const cd2=setInterval(()=>{timeLeft--;timerEl.textContent=timeLeft>0?'in '+timeLeft+'s':'';if(timeLeft<=0){clearInterval(cd2);resendBtn.disabled=false;timerEl.textContent='';}},1000);
+}
+</script>
+</body>
+</html>

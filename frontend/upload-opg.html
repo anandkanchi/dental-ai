@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DentalAI — Upload OPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#060810;--surface:#0d1117;--surface2:#161b27;--border:#1e2535;--accent:#00e5ff;--green:#00ff87;--yellow:#fbbf24;--red:#f43f5e;--muted:#64748b;--text:#e2e8f0;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+
+/* ── Topbar ── */
+.topbar{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:1px;}
+.logo span{color:var(--accent);}
+.user-pill{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+.user-dot{width:28px;height:28px;background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}
+
+/* ── Progress ── */
+.progress-wrap{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:16px 40px;}
+.progress-steps{display:flex;align-items:center;max-width:800px;margin:0 auto;}
+.step{display:flex;align-items:center;gap:8px;}
+.step-num{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0;}
+.step.done .step-num{background:var(--green);border-color:var(--green);color:#000;}
+.step.active .step-num{background:var(--accent);border-color:var(--accent);color:#000;box-shadow:0 0 12px rgba(0,229,255,0.4);}
+.step-label{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);white-space:nowrap;}
+.step.active .step-label{color:var(--accent);}
+.step.done  .step-label{color:var(--green);}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px;}
+.step-line.done{background:var(--green);}
+
+/* ── Main ── */
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;position:relative;z-index:1;}
+.card{width:100%;max-width:560px;background:var(--surface);border:1px solid var(--border);border-top:2px solid var(--accent);border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5);position:relative;}
+.corner{position:absolute;width:12px;height:12px;border-color:var(--accent);border-style:solid;opacity:0.3;}
+.corner-tl{top:-1px;left:-1px;border-width:2px 0 0 2px;}
+.corner-tr{top:-1px;right:-1px;border-width:2px 2px 0 0;}
+.corner-bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px;}
+.corner-br{bottom:-1px;right:-1px;border-width:0 2px 2px 0;}
+
+.card-header{padding:28px 36px 0;}
+.card-eyebrow{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:3px;color:var(--accent);margin-bottom:8px;}
+.card-title{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:6px;}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6;}
+.divider{height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:0 36px;opacity:0.3;}
+.card-body{padding:28px 36px;}
+
+/* ── Patient badge ── */
+.patient-badge{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:24px;}
+.patient-avatar{width:36px;height:36px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.patient-info{flex:1;}
+.patient-name{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#fff;}
+.patient-meta{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* ── Drop zone ── */
+.drop-zone{border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;transition:all 0.25s;position:relative;margin-bottom:20px;background:var(--surface2);}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);background:rgba(0,229,255,0.04);box-shadow:0 0 0 4px rgba(0,229,255,0.06);}
+.drop-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.drop-icon{font-size:40px;margin-bottom:12px;display:block;line-height:1;}
+.drop-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;}
+.drop-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);line-height:1.6;}
+.drop-sub span{color:var(--accent);}
+
+/* ── Preview ── */
+.preview-wrap{display:none;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;position:relative;}
+.preview-wrap img{width:100%;display:block;max-height:260px;object-fit:contain;background:#000;}
+.preview-overlay{position:absolute;top:8px;right:8px;display:flex;gap:6px;}
+.preview-badge{font-family:'DM Mono',monospace;font-size:9px;background:rgba(0,0,0,0.7);border:1px solid var(--border);border-radius:4px;padding:3px 8px;color:var(--accent);}
+.remove-btn{background:rgba(0,0,0,0.7);border:1px solid rgba(244,63,94,0.4);border-radius:4px;padding:3px 8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--red);cursor:pointer;transition:all 0.2s;}
+.remove-btn:hover{background:rgba(244,63,94,0.15);}
+
+/* ── File info bar ── */
+.file-info{display:none;align-items:center;gap:10px;background:rgba(0,255,135,0.06);border:1px solid rgba(0,255,135,0.2);border-radius:8px;padding:10px 14px;margin-bottom:20px;}
+.file-info-icon{font-size:18px;}
+.file-info-text{flex:1;}
+.file-info-name{font-family:'DM Mono',monospace;font-size:11px;color:var(--green);font-weight:500;}
+.file-info-size{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* ── Buttons ── */
+.btn-primary{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;cursor:pointer;overflow:hidden;position:relative;transition:box-shadow 0.2s;}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%);transition:transform 0.4s;}
+.btn-primary:hover::before{transform:translateX(100%);}
+.btn-primary:hover{box-shadow:0 0 28px rgba(0,229,255,0.4);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;box-shadow:none;}
+.btn-primary:disabled::before{display:none;}
+
+/* ── Loading state ── */
+.btn-primary.loading{pointer-events:none;}
+.btn-primary.loading::after{content:'';display:inline-block;width:12px;height:12px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin 0.7s linear infinite;margin-left:10px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Result box ── */
+.result-wrap{display:none;margin-top:20px;}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.result-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);}
+.result-status{font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(0,255,135,0.1);border:1px solid rgba(0,255,135,0.3);color:var(--green);}
+.result-status.error{background:rgba(244,63,94,0.1);border-color:rgba(244,63,94,0.3);color:var(--red);}
+.result-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--text);white-space:pre-wrap;line-height:1.7;max-height:260px;overflow-y:auto;}
+.result-box::-webkit-scrollbar{width:4px;}
+.result-box::-webkit-scrollbar-track{background:transparent;}
+.result-box::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ── Back link ── */
+.back-btn{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;margin-top:14px;display:block;width:100%;text-align:center;}
+.back-btn:hover{color:var(--accent);}
+
+footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'DM Mono',monospace;font-size:10px;color:var(--border);letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="logo">Dental<span>AI</span></div>
+  <div class="user-pill"><div class="user-dot">🔬</div>Dr. Sharma · Radiologist</div>
+</div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <div class="progress-steps">
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">Login</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">Patient Details</div></div>
+    <div class="step-line done"></div>
+    <div class="step done"><div class="step-num">✓</div><div class="step-label">OTP Verify</div></div>
+    <div class="step-line done"></div>
+    <div class="step active"><div class="step-num">4</div><div class="step-label">Upload OPG</div></div>
+    <div class="step-line"></div>
+    <div class="step"><div class="step-num">5</div><div class="step-label">Analysis</div></div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="card">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+
+    <div class="card-header">
+      <div class="card-eyebrow">// Step 4 of 5</div>
+      <div class="card-title">Upload OPG X-Ray</div>
+      <div class="card-sub">Upload a panoramic dental radiograph for AI-powered analysis. Accepted formats: JPG, PNG, WEBP.</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="card-body">
+
+      <!-- Patient badge (populated from sessionStorage) -->
+      <div class="patient-badge" id="patientBadge" style="display:none;">
+        <div class="patient-avatar">🦷</div>
+        <div class="patient-info">
+          <div class="patient-name" id="badgeName">—</div>
+          <div class="patient-meta" id="badgeMeta">—</div>
+        </div>
+      </div>
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept="image/*" onchange="handleFile(this.files[0])"/>
+        <span class="drop-icon">🩻</span>
+        <div class="drop-title">Drop OPG image here</div>
+        <div class="drop-sub">or <span>click to browse</span> · JPG, PNG, WEBP up to 20 MB</div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-wrap" id="previewWrap">
+        <img id="previewImg" src="" alt="OPG Preview"/>
+        <div class="preview-overlay">
+          <span class="preview-badge" id="previewDims">—</span>
+          <button class="remove-btn" onclick="removeFile()">✕ Remove</button>
+        </div>
+      </div>
+
+      <!-- File info -->
+      <div class="file-info" id="fileInfo">
+        <span class="file-info-icon">📂</span>
+        <div class="file-info-text">
+          <div class="file-info-name" id="fileName">—</div>
+          <div class="file-info-size" id="fileSize">—</div>
+        </div>
+      </div>
+
+      <!-- Upload error -->
+      <div id="uploadError" style="display:none;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.3);border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--red);margin-bottom:12px;line-height:1.5;"></div>
+
+      <!-- Analyze button -->
+      <button class="btn-primary" id="analyzeBtn" onclick="uploadImage()" disabled>
+        ANALYZE OPG
+      </button>
+
+      <!-- Result -->
+      <div class="result-wrap" id="resultWrap">
+        <div class="result-header">
+          <span class="result-label">// Analysis Output</span>
+          <span class="result-status" id="resultStatus">SUCCESS</span>
+        </div>
+        <div class="result-box" id="result"></div>
+      </div>
+
+      <button class="back-btn" onclick="history.back()">← Back to OTP verification</button>
+    </div>
+  </div>
+</div>
+
+<footer>DENTALAI v1.0 · GITAM HACKATHON 2025</footer>
+
+<script>
+// Populate patient badge from sessionStorage
+const patient = JSON.parse(sessionStorage.getItem('patientData') || '{}');
+if (patient.name) {
+  document.getElementById('badgeName').textContent = patient.name;
+  document.getElementById('badgeMeta').textContent =
+    [patient.id, patient.age ? `Age ${patient.age}` : '', patient.gender, patient.scanDate].filter(Boolean).join(' · ');
+  document.getElementById('patientBadge').style.display = 'flex';
+}
+
+// Drag-and-drop
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) handleFile(file);
+});
+
+let selectedFile = null;
+
+function handleFile(file) {
+  if (!file) return;
+  selectedFile = file;
+
+  // Show preview
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('previewImg');
+    img.src = e.target.result;
+    img.onload = () => {
+      document.getElementById('previewDims').textContent = `${img.naturalWidth}×${img.naturalHeight}`;
+    };
+    document.getElementById('previewWrap').style.display = 'block';
+    document.getElementById('dropZone').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+
+  // Show file info
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB · ' + file.type;
+  document.getElementById('fileInfo').style.display = 'flex';
+
+  // Enable button
+  document.getElementById('analyzeBtn').disabled = false;
+
+  // Clear old result
+  document.getElementById('resultWrap').style.display = 'none';
+}
+
+function removeFile() {
+  selectedFile = null;
+  document.getElementById('previewWrap').style.display = 'none';
+  document.getElementById('dropZone').style.display = 'block';
+  document.getElementById('fileInfo').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('resultWrap').style.display = 'none';
+}
+
+// ── Backend URL ──────────────────────────────────────────────────
+const API_BASE = 'http://127.0.0.1:8000';
+
+// ── Show/hide inline error ────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('uploadError');
+  if (el) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+  else     { alert(msg); }
+}
+function clearError() {
+  const el = document.getElementById('uploadError');
+  if (el) el.style.display = 'none';
+}
+
+async function uploadImage() {
+  if (!selectedFile) return;
+  clearError();
+
+  const btn = document.getElementById('analyzeBtn');
+  btn.classList.add('loading');
+  btn.textContent = 'ANALYZING';
+
+  // 1. Save OPG image to sessionStorage for report.html
+  const toBase64 = file => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result);
+    r.onerror = () => rej(new Error('File read failed'));
+    r.readAsDataURL(file);
+  });
+
+  let base64img;
+  try {
+    base64img = await toBase64(selectedFile);
+    try { sessionStorage.setItem('opgImageData', base64img); } catch(_) {}
+  } catch(err) {
+    showError('Could not read file: ' + err.message);
+    btn.classList.remove('loading'); btn.textContent = 'ANALYZE OPG';
+    return;
+  }
+
+  // 2. Health-check before sending (gives a clear message if server is down)
+  try {
+    const hc = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(4000) });
+    if (!hc.ok) throw new Error('Server unhealthy (status ' + hc.status + ')');
+  } catch(err) {
+    showError('Cannot reach backend at ' + API_BASE + '. Start it with: uvicorn api_server:app --reload');
+    btn.classList.remove('loading'); btn.textContent = 'ANALYZE OPG';
+    return;
+  }
+
+  // 3. POST image to /analyze
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+
+  try {
+    const response = await fetch(API_BASE + '/analyze', {
+      method: 'POST',
+      body:   formData,
+    });
+
+    if (!response.ok) {
+      let detail = 'Unknown error';
+      try { const j = await response.json(); detail = j.detail || JSON.stringify(j); } catch(_) {}
+      throw new Error('HTTP ' + response.status + ' — ' + detail);
+    }
+
+    const data = await response.json();
+    console.log('[DentalAI] API response:', data);
+
+    sessionStorage.setItem('analysisResult', JSON.stringify(data));
+    setTimeout(() => { window.location.href = 'report.html'; }, 500);
+
+  } catch(err) {
+    showError(err.message);
+    btn.classList.remove('loading');
+    btn.textContent = 'ANALYZE OPG';
+  }
+}
+</script>
+
+</body>
+</html>
