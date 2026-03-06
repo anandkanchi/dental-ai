@@ -182,6 +182,9 @@ footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'D
         </div>
       </div>
 
+      <!-- Upload error -->
+      <div id="uploadError" style="display:none;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.3);border-radius:8px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--red);margin-bottom:12px;line-height:1.5;"></div>
+
       <!-- Analyze button -->
       <button class="btn-primary" id="analyzeBtn" onclick="uploadImage()" disabled>
         ANALYZE OPG
@@ -265,47 +268,83 @@ function removeFile() {
   document.getElementById('resultWrap').style.display = 'none';
 }
 
+// ── Backend URL ──────────────────────────────────────────────────
+const API_BASE = 'http://127.0.0.1:8000';
+
+// ── Show/hide inline error ────────────────────────────────────────
+function showError(msg) {
+  const el = document.getElementById('uploadError');
+  if (el) { el.textContent = '⚠ ' + msg; el.style.display = 'block'; }
+  else     { alert(msg); }
+}
+function clearError() {
+  const el = document.getElementById('uploadError');
+  if (el) el.style.display = 'none';
+}
+
 async function uploadImage() {
   if (!selectedFile) return;
+  clearError();
 
   const btn = document.getElementById('analyzeBtn');
   btn.classList.add('loading');
   btn.textContent = 'ANALYZING';
 
-  // Save image as base64 so report.html can display it
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try { sessionStorage.setItem('opgImageData', e.target.result); } catch(_) {}
+  // 1. Save OPG image to sessionStorage for report.html
+  const toBase64 = file => new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload  = e => res(e.target.result);
+    r.onerror = () => rej(new Error('File read failed'));
+    r.readAsDataURL(file);
+  });
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
+  let base64img;
+  try {
+    base64img = await toBase64(selectedFile);
+    try { sessionStorage.setItem('opgImageData', base64img); } catch(_) {}
+  } catch(err) {
+    showError('Could not read file: ' + err.message);
+    btn.classList.remove('loading'); btn.textContent = 'ANALYZE OPG';
+    return;
+  }
 
-    try {
-      const response = await fetch('http://127.0.0.1:8000/analyze', {
-        method: 'POST',
-        body: formData
-      });
+  // 2. Health-check before sending (gives a clear message if server is down)
+  try {
+    const hc = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(4000) });
+    if (!hc.ok) throw new Error('Server unhealthy (status ' + hc.status + ')');
+  } catch(err) {
+    showError('Cannot reach backend at ' + API_BASE + '. Start it with: uvicorn api_server:app --reload');
+    btn.classList.remove('loading'); btn.textContent = 'ANALYZE OPG';
+    return;
+  }
 
-      if (!response.ok) {
-        const errText = await response.text();
-        alert('Backend error ' + response.status + ':\n' + errText);
-        btn.classList.remove('loading');
-        btn.textContent = 'ANALYZE OPG';
-        return;
-      }
+  // 3. POST image to /analyze
+  const formData = new FormData();
+  formData.append('file', selectedFile);
 
-      const data = await response.json();
-      console.log('API response:', data);
-      sessionStorage.setItem('analysisResult', JSON.stringify(data));
-      setTimeout(() => { window.location.href = 'report.html'; }, 600);
+  try {
+    const response = await fetch(API_BASE + '/analyze', {
+      method: 'POST',
+      body:   formData,
+    });
 
-    } catch (err) {
-      alert('Could not reach backend.\nMake sure uvicorn is running on port 8000.\n\n' + err.message);
-      btn.classList.remove('loading');
-      btn.textContent = 'ANALYZE OPG';
+    if (!response.ok) {
+      let detail = 'Unknown error';
+      try { const j = await response.json(); detail = j.detail || JSON.stringify(j); } catch(_) {}
+      throw new Error('HTTP ' + response.status + ' — ' + detail);
     }
-  };
-  reader.readAsDataURL(selectedFile);
+
+    const data = await response.json();
+    console.log('[DentalAI] API response:', data);
+
+    sessionStorage.setItem('analysisResult', JSON.stringify(data));
+    setTimeout(() => { window.location.href = 'report.html'; }, 500);
+
+  } catch(err) {
+    showError(err.message);
+    btn.classList.remove('loading');
+    btn.textContent = 'ANALYZE OPG';
+  }
 }
 </script>
 
