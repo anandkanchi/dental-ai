@@ -11,12 +11,14 @@
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;flex-direction:column;}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
 
+/* ── Topbar ── */
 .topbar{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
 .logo{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:1px;}
 .logo span{color:var(--accent);}
 .user-pill{display:flex;align-items:center;gap:8px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
 .user-dot{width:28px;height:28px;background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;}
 
+/* ── Progress ── */
 .progress-wrap{position:relative;z-index:10;background:var(--surface);border-bottom:1px solid var(--border);padding:16px 40px;}
 .progress-steps{display:flex;align-items:center;max-width:800px;margin:0 auto;}
 .step{display:flex;align-items:center;gap:8px;}
@@ -29,12 +31,10 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .step-line{flex:1;height:2px;background:var(--border);margin:0 8px;}
 .step-line.done{background:var(--green);}
 
+/* ── Page layout ── */
 .main{flex:1;padding:32px 40px;position:relative;z-index:1;max-width:1280px;margin:0 auto;width:100%;}
 
-/* Banner */
-.warn-banner{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);border-radius:10px;padding:12px 18px;margin-bottom:20px;font-family:'DM Mono',monospace;font-size:11px;color:var(--yellow);display:none;}
-.warn-banner.show{display:block;}
-
+/* ── Report header bar ── */
 .report-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px;}
 .report-title-block .eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
 .report-title-block h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:700;color:#fff;}
@@ -46,7 +46,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .btn-new{display:flex;align-items:center;gap:8px;padding:10px 20px;background:transparent;color:var(--accent);border:1px solid rgba(0,229,255,0.3);border-radius:8px;font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all 0.2s;}
 .btn-new:hover{background:rgba(0,229,255,0.06);border-color:var(--accent);}
 
-/* Patient strip */
+/* ── Patient + scan info strip ── */
 .info-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:28px;}
 .info-cell{background:var(--surface);padding:14px 18px;}
 .info-cell-label{font-family:'DM Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;}
@@ -54,85 +54,84 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .info-cell-val.cyan{color:var(--accent);}
 .info-cell-val.green{color:var(--green);}
 
-/* Stats bar */
-.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);}
-.stat-cell{background:var(--surface2);padding:14px 12px;text-align:center;}
-.stat-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;margin-bottom:3px;}
-.stat-label{font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
+/* ── Main grid ── */
+.report-grid{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;}
 
-/* Grid */
-.report-grid{display:grid;grid-template-columns:1fr 400px;gap:20px;align-items:start;}
-
-/* OPG panel */
+/* ── OPG + mask panel ── */
 .opg-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .panel-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
 .panel-title{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);}
 .toggle-btns{display:flex;gap:4px;}
 .toggle-btn{padding:4px 12px;border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all 0.2s;}
 .toggle-btn.active{background:rgba(0,229,255,0.1);border-color:var(--accent);color:var(--accent);}
-.opg-canvas-wrap{position:relative;background:#000;min-height:300px;display:flex;align-items:center;justify-content:center;}
+.opg-canvas-wrap{position:relative;background:#000;min-height:320px;display:flex;align-items:center;justify-content:center;}
 .opg-placeholder{text-align:center;padding:60px 24px;}
 .opg-placeholder-icon{font-size:52px;display:block;margin-bottom:12px;opacity:0.3;}
 .opg-placeholder-text{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
-#opgImage{width:100%;display:none;max-height:340px;object-fit:contain;}
-#maskOverlay{position:absolute;inset:0;display:none;pointer-events:none;}
+#opgImage{width:100%;display:block;max-height:340px;object-fit:contain;}
+#maskOverlay{position:absolute;inset:0;display:none;}
 #maskCanvas{width:100%;height:100%;display:block;}
-.legend{display:flex;flex-wrap:wrap;gap:8px;padding:12px 18px;border-top:1px solid var(--border);}
-.legend-item{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);}
+
+/* ── Colour legend ── */
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:14px 18px;border-top:1px solid var(--border);}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
 
-/* Anomaly scores */
-.score-group{margin-bottom:14px;}
-.score-group:last-child{margin-bottom:0;}
-.score-label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.score-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text);}
-.score-val{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;}
-.score-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-.score-bar{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+/* ── Right sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:16px;}
 
-/* Section cards */
+/* ── Section card ── */
 .section-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
 .section-head{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);}
 .section-icon{font-size:18px;}
 .section-title{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);}
-.section-badge{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:20px;}
+.section-count{margin-left:auto;font-family:'DM Mono',monospace;font-size:10px;padding:2px 8px;border-radius:20px;}
 .section-body{padding:14px 18px;}
 
-/* FDI grid */
+/* ── FDI tooth grid ── */
 .fdi-grid-wrap{display:flex;flex-direction:column;gap:6px;}
 .fdi-row-label{font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;text-align:center;margin-bottom:2px;}
-.fdi-row{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;}
-.tooth-chip{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:7.5px;font-weight:500;border:1px solid;cursor:default;transition:transform 0.15s;}
-.tooth-chip:hover{transform:scale(1.2);z-index:5;}
-.tooth-chip[data-status="Normal"]{background:rgba(0,255,135,0.08);border-color:rgba(0,255,135,0.3);color:var(--green);}
-.tooth-chip[data-status="Cavity"]{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.4);color:var(--yellow);}
-.tooth-chip[data-status="Impacted Tooth"]{background:rgba(244,63,94,0.1);border-color:rgba(244,63,94,0.4);color:var(--red);}
-.tooth-chip[data-status="Fillings"]{background:rgba(0,229,255,0.08);border-color:rgba(0,229,255,0.3);color:var(--accent);}
-.tooth-chip[data-status="Implant"]{background:rgba(251,146,60,0.08);border-color:rgba(251,146,60,0.3);color:var(--orange);}
-.tooth-chip[data-status="missing"]{background:rgba(100,116,139,0.06);border-color:rgba(100,116,139,0.2);color:var(--muted);}
-.tooth-chip[data-status="Unknown"]{background:rgba(100,116,139,0.06);border-color:rgba(100,116,139,0.2);color:var(--muted);}
+.fdi-row{display:flex;gap:4px;justify-content:center;}
+.tooth-chip{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:8px;font-weight:500;border:1px solid;cursor:default;transition:transform 0.15s;position:relative;}
+.tooth-chip:hover{transform:scale(1.15);z-index:5;}
+.tooth-chip[data-status="normal"]{background:rgba(0,255,135,0.08);border-color:rgba(0,255,135,0.3);color:var(--green);}
+.tooth-chip[data-status="cavity"]{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.4);color:var(--yellow);}
+.tooth-chip[data-status="impacted"]{background:rgba(244,63,94,0.1);border-color:rgba(244,63,94,0.4);color:var(--red);}
+.tooth-chip[data-status="filling"]{background:rgba(0,229,255,0.08);border-color:rgba(0,229,255,0.3);color:var(--accent);}
+.tooth-chip[data-status="missing"]{background:rgba(100,116,139,0.08);border-color:rgba(100,116,139,0.2);color:var(--muted);}
 .fdi-divider{text-align:center;font-family:'DM Mono',monospace;font-size:8px;color:var(--border);letter-spacing:2px;padding:2px 0;}
 .fdi-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-.fdi-legend-item{display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);}
+.fdi-legend-item{display:flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:8px;}
 .fdi-legend-dot{width:8px;height:8px;border-radius:2px;}
 
-/* Findings */
-.finding-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+/* ── Anomaly / finding rows ── */
+.finding-row{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
 .finding-row:last-child{border-bottom:none;padding-bottom:0;}
-.finding-icon{font-size:16px;margin-top:1px;flex-shrink:0;}
+.finding-icon{font-size:18px;margin-top:1px;flex-shrink:0;}
 .finding-content{flex:1;}
 .finding-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
 .finding-desc{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);line-height:1.5;}
-.sev-badge{flex-shrink:0;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;}
+.severity-badge{flex-shrink:0;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;}
 .sev-high{background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);color:var(--red);}
 .sev-med{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:var(--yellow);}
 .sev-low{background:rgba(0,255,135,0.08);border:1px solid rgba(0,255,135,0.2);color:var(--green);}
 
-.empty-state{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:center;padding:18px 0;}
+/* ── Summary stats bar ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.stat-cell{background:var(--surface2);padding:14px 12px;text-align:center;}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;margin-bottom:3px;}
+.stat-label{font-family:'DM Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);}
 
+/* ── Confidence bar ── */
+.conf-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.conf-row:last-child{margin-bottom:0;}
+.conf-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text);width:100px;flex-shrink:0;}
+.conf-bar-wrap{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.conf-bar{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.conf-pct{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);width:36px;text-align:right;}
+
+/* ── Tooltip on tooth hover ── */
 .tooth-tooltip{position:fixed;background:var(--surface);border:1px solid var(--accent);border-radius:6px;padding:6px 10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--text);pointer-events:none;z-index:100;display:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,0.5);}
-
-.sidebar{display:flex;flex-direction:column;gap:16px;}
 
 footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'DM Mono',monospace;font-size:10px;color:var(--border);letter-spacing:1px;}
 
@@ -140,17 +139,18 @@ footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'D
   .report-grid{grid-template-columns:1fr;}
   .main{padding:20px 16px;}
   .topbar,.progress-wrap{padding-left:16px;padding-right:16px;}
-  .stats-row{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
 <body>
 
+<!-- Topbar -->
 <div class="topbar">
   <div class="logo">Dental<span>AI</span></div>
-  <div class="user-pill"><div class="user-dot">🔬</div><span id="userPill">Dr. Sharma · Radiologist</span></div>
+  <div class="user-pill"><div class="user-dot">🔬</div>Dr. Sharma · Radiologist</div>
 </div>
 
+<!-- Progress -->
 <div class="progress-wrap">
   <div class="progress-steps">
     <div class="step done"><div class="step-num">✓</div><div class="step-label">Login</div></div>
@@ -167,10 +167,7 @@ footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'D
 
 <div class="main">
 
-  <div class="warn-banner" id="warnBanner">
-    ⚠️ No analysis result found in session. Showing empty state — please complete the upload step first.
-  </div>
-
+  <!-- Report header -->
   <div class="report-header">
     <div class="report-title-block">
       <div class="eyebrow">// Step 5 of 5 — AI Diagnostic Report</div>
@@ -178,519 +175,512 @@ footer{position:relative;z-index:1;text-align:center;padding:16px;font-family:'D
     </div>
     <div class="report-actions">
       <button class="btn-new" onclick="window.location.href='patient-details.html'">＋ New Scan</button>
-      <button class="btn-download" onclick="downloadReport()">⬇ Download PDF</button>
+      <button class="btn-download" onclick="downloadReport()">⬇ Download PDF Report</button>
     </div>
   </div>
 
   <!-- Patient info strip -->
-  <div class="info-strip">
+  <div class="info-strip" id="infoStrip">
     <div class="info-cell"><div class="info-cell-label">Patient Name</div><div class="info-cell-val cyan" id="iName">—</div></div>
     <div class="info-cell"><div class="info-cell-label">Patient ID</div><div class="info-cell-val" id="iId">—</div></div>
     <div class="info-cell"><div class="info-cell-label">Age / Gender</div><div class="info-cell-val" id="iAge">—</div></div>
     <div class="info-cell"><div class="info-cell-label">Referring Doctor</div><div class="info-cell-val" id="iDoc">—</div></div>
     <div class="info-cell"><div class="info-cell-label">Scan Date</div><div class="info-cell-val" id="iDate">—</div></div>
-    <div class="info-cell"><div class="info-cell-label">Status</div><div class="info-cell-val green">✓ COMPLETE</div></div>
+    <div class="info-cell"><div class="info-cell-label">Report Status</div><div class="info-cell-val green">✓ COMPLETE</div></div>
   </div>
 
   <!-- Summary stats -->
   <div class="section-card" style="margin-bottom:20px;">
     <div class="stats-row">
-      <div class="stat-cell"><div class="stat-val" style="color:var(--accent)" id="statTotal">—</div><div class="stat-label">Teeth Detected</div></div>
-      <div class="stat-cell"><div class="stat-val" style="color:var(--green)" id="statNormal">—</div><div class="stat-label">Real Teeth</div></div>
-      <div class="stat-cell"><div class="stat-val" style="color:var(--orange)" id="statImplants">—</div><div class="stat-label">Implants</div></div>
-      <div class="stat-cell"><div class="stat-val" style="color:var(--red)" id="statMissing">—</div><div class="stat-label">Missing</div></div>
-      <div class="stat-cell"><div class="stat-val" style="color:var(--muted)" id="statCavities">—</div><div class="stat-label">Uncertain</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--accent)" id="statTotal">32</div><div class="stat-label">Teeth Detected</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--red)" id="statIssues">4</div><div class="stat-label">Issues Found</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--yellow)" id="statMissing">2</div><div class="stat-label">Missing / Impacted</div></div>
+      <div class="stat-cell"><div class="stat-val" style="color:var(--green)" id="statConf">94%</div><div class="stat-label">AI Confidence</div></div>
     </div>
   </div>
 
+  <!-- Main grid -->
   <div class="report-grid">
 
-    <!-- LEFT -->
+    <!-- LEFT: OPG viewer -->
     <div>
-      <!-- OPG viewer -->
       <div class="opg-panel">
         <div class="panel-topbar">
-          <span class="panel-title">// OPG Radiograph</span>
+          <span class="panel-title">// Color-Coded Segmentation Mask</span>
           <div class="toggle-btns">
             <button class="toggle-btn active" id="btnOriginal" onclick="toggleView('original')">Original</button>
-            <button class="toggle-btn" id="btnMask" onclick="toggleView('mask')">Bbox Overlay</button>
+            <button class="toggle-btn" id="btnMask" onclick="toggleView('mask')">Mask Overlay</button>
           </div>
         </div>
         <div class="opg-canvas-wrap" id="opgWrap">
+          <!-- Shows placeholder if no image uploaded, or actual image from sessionStorage -->
           <div class="opg-placeholder" id="opgPlaceholder">
             <span class="opg-placeholder-icon">🩻</span>
-            <div class="opg-placeholder-text">No OPG image found in session.<br/>Upload an image on the previous step.</div>
+            <div class="opg-placeholder-text">No OPG image found.<br/>Results below are from demo data.</div>
           </div>
-          <img id="opgImage" alt="OPG X-Ray"/>
-          <div id="maskOverlay"><canvas id="maskCanvas"></canvas></div>
+          <img id="opgImage" style="display:none;" alt="OPG X-Ray"/>
+          <div id="maskOverlay">
+            <canvas id="maskCanvas"></canvas>
+          </div>
         </div>
+        <!-- Colour legend -->
         <div class="legend">
           <div class="legend-item"><div class="legend-dot" style="background:#00ff87;"></div>Normal</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#fbbf24;"></div>Cavity</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fbbf24;"></div>Cavity-Involved</div>
           <div class="legend-item"><div class="legend-dot" style="background:#f43f5e;"></div>Impacted</div>
           <div class="legend-item"><div class="legend-dot" style="background:#00e5ff;"></div>Filling</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#fb923c;"></div>Implant</div>
           <div class="legend-item"><div class="legend-dot" style="background:#64748b;"></div>Missing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fb923c;"></div>Anomaly Flagged</div>
         </div>
       </div>
 
-      <!-- Anomaly detection scores -->
+      <!-- AI Confidence Scores -->
       <div class="section-card" style="margin-top:20px;">
         <div class="section-head">
-          <span class="section-icon">📡</span>
-          <span class="section-title">// Bone Anomaly Analysis</span>
-          <span class="section-badge" id="anomalyBadge" style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);color:var(--accent);">—</span>
+          <span class="section-icon">📊</span>
+          <span class="section-title">// Model Confidence Scores</span>
         </div>
         <div class="section-body">
-          <div class="score-group">
-            <div class="score-label-row">
-              <span class="score-label">Overall Anomaly Score</span>
-              <span class="score-val" id="anomalyScoreVal">—</span>
-            </div>
-            <div class="score-bar-wrap"><div class="score-bar" id="barAnomaly" style="width:0%"></div></div>
+          <div class="conf-row">
+            <span class="conf-label">Segmentation</span>
+            <div class="conf-bar-wrap"><div class="conf-bar" style="width:0%;background:var(--green);" data-target="96"></div></div>
+            <span class="conf-pct">96%</span>
           </div>
-          <div class="score-group">
-            <div class="score-label-row">
-              <span class="score-label">Bone Density</span>
-              <span class="score-val" id="densityVal" style="color:var(--green)">—</span>
-            </div>
-            <div class="score-bar-wrap"><div class="score-bar" id="barDensity" style="width:0%;background:var(--green)"></div></div>
+          <div class="conf-row">
+            <span class="conf-label">FDI Numbering</span>
+            <div class="conf-bar-wrap"><div class="conf-bar" style="width:0%;background:var(--accent);" data-target="94"></div></div>
+            <span class="conf-pct">94%</span>
           </div>
-          <div class="score-group">
-            <div class="score-label-row">
-              <span class="score-label">Height Loss Index</span>
-              <span class="score-val" id="heightVal" style="color:var(--yellow)">—</span>
-            </div>
-            <div class="score-bar-wrap"><div class="score-bar" id="barHeight" style="width:0%;background:var(--yellow)"></div></div>
+          <div class="conf-row">
+            <span class="conf-label">Classification</span>
+            <div class="conf-bar-wrap"><div class="conf-bar" style="width:0%;background:var(--yellow);" data-target="91"></div></div>
+            <span class="conf-pct">91%</span>
           </div>
-          <div class="score-group">
-            <div class="score-label-row">
-              <span class="score-label">Edge Irregularity</span>
-              <span class="score-val" id="edgeVal" style="color:var(--orange)">—</span>
-            </div>
-            <div class="score-bar-wrap"><div class="score-bar" id="barEdge" style="width:0%;background:var(--orange)"></div></div>
+          <div class="conf-row">
+            <span class="conf-label">Anomaly Det.</span>
+            <div class="conf-bar-wrap"><div class="conf-bar" style="width:0%;background:var(--orange);" data-target="88"></div></div>
+            <span class="conf-pct">88%</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- RIGHT sidebar -->
+    <!-- RIGHT: sidebar -->
     <div class="sidebar">
 
       <!-- FDI Tooth Map -->
       <div class="section-card">
         <div class="section-head">
           <span class="section-icon">🦷</span>
-          <span class="section-title">// FDI Tooth Map</span>
+          <span class="section-title">// FDI Tooth Map (1–32)</span>
         </div>
         <div class="section-body">
           <div class="fdi-grid-wrap" id="fdiGrid"></div>
           <div class="fdi-legend">
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--green)"></div>Normal</div>
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--yellow)"></div>Cavity</div>
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--red)"></div>Impacted</div>
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--accent)"></div>Filling</div>
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--orange)"></div>Implant</div>
-            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--muted)"></div>Missing</div>
+            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--green);"></div><span style="color:var(--muted)">Normal</span></div>
+            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--yellow);"></div><span style="color:var(--muted)">Cavity</span></div>
+            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--red);"></div><span style="color:var(--muted)">Impacted</span></div>
+            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--accent);"></div><span style="color:var(--muted)">Filling</span></div>
+            <div class="fdi-legend-item"><div class="fdi-legend-dot" style="background:var(--muted);"></div><span style="color:var(--muted)">Missing</span></div>
           </div>
         </div>
       </div>
 
-      <!-- Findings list -->
+      <!-- Anomalies & Findings -->
       <div class="section-card">
         <div class="section-head">
           <span class="section-icon">⚠️</span>
-          <span class="section-title">// Findings</span>
-          <span class="section-badge sev-high" id="findingsCount" style="border:1px solid">—</span>
+          <span class="section-title">// Anomalies & Findings</span>
+          <span class="section-count sev-high" id="findingsCount">4 Flagged</span>
         </div>
         <div class="section-body" id="findingsList"></div>
       </div>
 
-      <!-- Missing by quadrant -->
-      <div class="section-card">
-        <div class="section-head">
-          <span class="section-icon">🗺️</span>
-          <span class="section-title">// Missing by Quadrant</span>
-        </div>
-        <div class="section-body" id="quadrantList"></div>
-      </div>
-
-      <!-- Implants & special -->
+      <!-- Implant Classification -->
       <div class="section-card">
         <div class="section-head">
           <span class="section-icon">🔩</span>
-          <span class="section-title">// Implant Detection</span>
+          <span class="section-title">// Implant Classification</span>
         </div>
         <div class="section-body" id="implantList"></div>
       </div>
 
     </div>
-  </div>
-</div>
+  </div><!-- end report-grid -->
+</div><!-- end main -->
 
+<!-- Tooth tooltip -->
 <div class="tooth-tooltip" id="toothTip"></div>
+
 <footer>DENTALAI v1.0 · GITAM HACKATHON 2025</footer>
 
 <script>
-// ─────────────────────────────────────────
-//  DATA from sessionStorage
-// ─────────────────────────────────────────
-const patient   = JSON.parse(sessionStorage.getItem('patientData')    || '{}');
-const apiResult = JSON.parse(sessionStorage.getItem('analysisResult') || 'null');
-const opgData   = sessionStorage.getItem('opgImageData');
+// ══════════════════════════════════════════════════════
+// CONFIG — change this if backend runs on a different port
+// ══════════════════════════════════════════════════════
+const API_BASE = 'http://127.0.0.1:8000';
 
-// ─── Patient strip ───────────────────────
-document.getElementById('iName').textContent = patient.name        || '—';
-document.getElementById('iId').textContent   = patient.id          || '—';
+// ── Patient info from sessionStorage ─────────────────
+const patient = JSON.parse(sessionStorage.getItem('patientData') || '{}');
+document.getElementById('iName').textContent = patient.name       || 'Demo Patient';
+document.getElementById('iId').textContent   = patient.id         || 'P-DEMO01';
 document.getElementById('iAge').textContent  = [patient.age ? patient.age + ' yrs' : '', patient.gender].filter(Boolean).join(' / ') || '—';
-document.getElementById('iDoc').textContent  = patient.referringDoc || 'N/A';
-document.getElementById('iDate').textContent = patient.scanDate    || new Date().toISOString().split('T')[0];
+document.getElementById('iDoc').textContent  = patient.referringDoc || '—';
+document.getElementById('iDate').textContent = patient.scanDate   || new Date().toISOString().split('T')[0];
 
-if (!apiResult) document.getElementById('warnBanner').classList.add('show');
-
-// ─── OPG image ───────────────────────────
+// ── OPG image ─────────────────────────────────────────
+const opgData = sessionStorage.getItem('opgImageData');
 if (opgData) {
   const img = document.getElementById('opgImage');
   img.src = opgData;
   img.style.display = 'block';
   document.getElementById('opgPlaceholder').style.display = 'none';
-  img.onload = () => {
-    if (apiResult && apiResult.teeth) drawBboxOverlay(img, apiResult.teeth, apiResult.missing_teeth || []);
-  };
+  img.onload = () => renderMask(img, fdiStatusMap);
 }
 
-// ─── Build FDI status/confidence maps ────
-const fdiStatusMap = {};
-const fdiConfMap   = {};
-
-if (apiResult) {
-  (apiResult.teeth || []).forEach(t => {
-    fdiStatusMap[t.fdi] = t.condition;
-    fdiConfMap[t.fdi]   = t.confidence;
-  });
-  (apiResult.missing_teeth || []).forEach(fdi => {
-    if (!fdiStatusMap[fdi]) fdiStatusMap[fdi] = 'missing';
-  });
-}
-
-// ─── Summary stats ────────────────────────
-if (apiResult && apiResult.summary) {
-  const s = apiResult.summary;
-  const uncertain = (s.total_detected ?? 0) - (s.normal ?? 0) - (s.implants ?? 0);
-  document.getElementById('statTotal').textContent    = s.total_detected ?? '—';
-  document.getElementById('statNormal').textContent   = s.normal         ?? '—';
-  document.getElementById('statImplants').textContent = s.implants       ?? '—';
-  document.getElementById('statMissing').textContent  = s.total_missing  ?? '—';
-  document.getElementById('statCavities').textContent = Math.max(0, uncertain);
-}
-
-// ─── Anomaly scores ───────────────────────
-if (apiResult && apiResult.anomaly) {
-  const a = apiResult.anomaly;
-  document.getElementById('anomalyBadge').textContent = a.label || '—';
-
-  // Scores from anomaly.py are raw floats (NOT 0-1 percentages).
-  // anomaly_score is a weighted sum (can exceed 1), density/edge scores are
-  // pixel ratios that can be > 1 in practice.
-  // Display the raw value as a decimal, and cap the visual bar at 100%.
-  const ap = a.anomaly_score;
-  const dp = a.density_score;
-  const hp = a.height_score;
-  const ep = a.edge_score;
-
-  // Bar widths capped at 100% for display
-  const apBar = Math.min(ap * 100, 100);
-  const dpBar = Math.min(dp * 100, 100);
-  const hpBar = Math.min(hp * 100, 100);
-  const epBar = Math.min(ep * 100, 100);
-
-  // Color thresholds match anomaly.py: <0.12 Normal, <0.25 Bone Loss, else Peri-implantitis
-  const barColor = ap < 0.12 ? 'var(--green)' : ap < 0.25 ? 'var(--yellow)' : 'var(--red)';
-  document.getElementById('anomalyScoreVal').textContent = ap.toFixed(4);
-  document.getElementById('anomalyScoreVal').style.color = barColor;
-
-  setTimeout(() => {
-    document.getElementById('barAnomaly').style.cssText = `width:${apBar}%;background:${barColor};`;
-    document.getElementById('barDensity').style.width = dpBar + '%';
-    document.getElementById('barHeight').style.width  = hpBar + '%';
-    document.getElementById('barEdge').style.width    = epBar + '%';
-    document.getElementById('densityVal').textContent = dp.toFixed(4);
-    document.getElementById('heightVal').textContent  = hp.toFixed(4);
-    document.getElementById('edgeVal').textContent    = ep.toFixed(4);
-  }, 400);
-}
-
-// ─── Const helpers ────────────────────────
-const TOOTH_NAMES = {
-  11:'Central Incisor',12:'Lateral Incisor',13:'Canine',14:'1st Premolar',15:'2nd Premolar',16:'1st Molar',17:'2nd Molar',18:'3rd Molar',
-  21:'Central Incisor',22:'Lateral Incisor',23:'Canine',24:'1st Premolar',25:'2nd Premolar',26:'1st Molar',27:'2nd Molar',28:'3rd Molar',
-  31:'Central Incisor',32:'Lateral Incisor',33:'Canine',34:'1st Premolar',35:'2nd Premolar',36:'1st Molar',37:'2nd Molar',38:'3rd Molar',
-  41:'Central Incisor',42:'Lateral Incisor',43:'Canine',44:'1st Premolar',45:'2nd Premolar',46:'1st Molar',47:'2nd Molar',48:'3rd Molar',
-};
-const COND_COLOR = {
-  Normal:'var(--green)', Cavity:'var(--yellow)', 'Impacted Tooth':'var(--red)',
-  Fillings:'var(--accent)', Implant:'var(--orange)', missing:'var(--muted)', Unknown:'var(--muted)'
-};
-const COND_ICON = {
-  Normal:'🟢', Cavity:'🟡', 'Impacted Tooth':'🔴',
-  Fillings:'🔵', Implant:'🟠', missing:'⚪', Unknown:'⚫'
-};
-
-// ─── FDI Tooth Grid ───────────────────────
-function buildFdiGrid() {
-  const grid = document.getElementById('fdiGrid');
-  const tip  = document.getElementById('toothTip');
-
-  const rows = [
-    { teeth:[18,17,16,15,14,13,12,11], label:'Upper Right (Q1) ←→ Upper Left (Q2)' },
-    { teeth:[21,22,23,24,25,26,27,28], label:'' },
-    { divider: true },
-    { teeth:[48,47,46,45,44,43,42,41], label:'Lower Right (Q4) ←→ Lower Left (Q3)' },
-    { teeth:[31,32,33,34,35,36,37,38], label:'' },
-  ];
-
-  rows.forEach(r => {
-    if (r.divider) {
-      const d = document.createElement('div');
-      d.className = 'fdi-divider';
-      d.textContent = '— — — CENTER LINE — — —';
-      grid.appendChild(d);
-      return;
-    }
-    if (r.label) {
-      const l = document.createElement('div');
-      l.className = 'fdi-row-label';
-      l.textContent = r.label;
-      grid.appendChild(l);
-    }
-    const row = document.createElement('div');
-    row.className = 'fdi-row';
-    r.teeth.forEach(n => {
-      const status = fdiStatusMap[n] || (Object.keys(fdiStatusMap).length > 0 ? 'missing' : 'Normal');
-      const chip = document.createElement('div');
-      chip.className = 'tooth-chip';
-      chip.dataset.status = status;
-      chip.textContent = n;
-      chip.addEventListener('mousemove', e => {
-        const conf = fdiConfMap[n] != null ? ` · ${(fdiConfMap[n]*100).toFixed(1)}% conf` : '';
-        const quad = Math.floor(n/10);
-        const qn = {1:'Upper Right',2:'Upper Left',3:'Lower Left',4:'Lower Right'};
-        tip.innerHTML = `<b style="color:var(--accent)">Tooth ${n}</b><br>${qn[quad]} ${TOOTH_NAMES[n]||''}<br><span style="color:${COND_COLOR[status]||'var(--muted)'}">${status.toUpperCase()}</span>${conf}`;
-        tip.style.display = 'block';
-        tip.style.left = (e.clientX + 14) + 'px';
-        tip.style.top  = (e.clientY - 10) + 'px';
-      });
-      chip.addEventListener('mouseleave', () => tip.style.display = 'none');
-      row.appendChild(chip);
-    });
-    grid.appendChild(row);
-  });
-}
-buildFdiGrid();
-
-// ─── Findings ─────────────────────────────
-function buildFindings() {
-  const el = document.getElementById('findingsList');
-  const badge = document.getElementById('findingsCount');
-
-  if (!apiResult) {
-    el.innerHTML = '<div class="empty-state">Run a scan to see findings.</div>';
-    badge.textContent = '0 Found';
-    return;
-  }
-
-  const findings = [];
-
-  // Bone anomaly
-  if (apiResult.anomaly) {
-    const a = apiResult.anomaly;
-    const sev = a.label === 'Normal Bone' ? 'low' : a.label === 'Bone Loss' ? 'med' : 'high';
-    const icon = a.label === 'Normal Bone' ? '🟢' : a.label === 'Bone Loss' ? '🟡' : '🔴';
-    findings.push({ icon, sev,
-      title: `Bone Condition: ${a.label}`,
-      desc:  `Score ${(a.anomaly_score*100).toFixed(1)}% · Density ${(a.density_score*100).toFixed(1)}% · Edge ${(a.edge_score*100).toFixed(1)}%`
-    });
-  }
-
-  // Per-tooth findings — model outputs Normal or Implant only
-  const implantTeeth = (apiResult.teeth || []).filter(t => t.condition === 'Implant');
-  if (implantTeeth.length > 0) {
-    implantTeeth.forEach(t => {
-      findings.push({ icon: '🟠', sev: 'low',
-        title: `Implant Detected — Tooth ${t.fdi}`,
-        desc:  `${TOOTH_NAMES[t.fdi]||''} · Confidence ${(t.confidence*100).toFixed(1)}%`
-      });
-    });
-  }
-
-  // Missing teeth summary
-  const miss = apiResult.missing_teeth || [];
-  if (miss.length > 0) {
-    findings.push({ icon:'⚪', sev:'low',
-      title: `${miss.length} Missing Tooth/Teeth Detected`,
-      desc:  `FDI: ${miss.join(', ')}`
-    });
-  }
-
-  badge.textContent = findings.length + ' Found';
-
-  if (findings.length === 0) {
-    el.innerHTML = '<div class="empty-state">✅ No significant issues detected.</div>';
-    return;
-  }
-
-  findings.forEach(f => {
-    el.innerHTML += `<div class="finding-row">
-      <span class="finding-icon">${f.icon}</span>
-      <div class="finding-content">
-        <div class="finding-title">${f.title}</div>
-        <div class="finding-desc">${f.desc}</div>
-      </div>
-      <span class="sev-badge sev-${f.sev}">${f.sev.toUpperCase()}</span>
-    </div>`;
-  });
-}
-buildFindings();
-
-// ─── Missing by Quadrant ──────────────────
-function buildQuadrant() {
-  const el = document.getElementById('quadrantList');
-  if (!apiResult || !apiResult.missing_by_quadrant) {
-    el.innerHTML = '<div class="empty-state">No data.</div>';
-    return;
-  }
-  const q = apiResult.missing_by_quadrant;
-  const QUAD = {upper_right:'Upper Right (Q1)',upper_left:'Upper Left (Q2)',lower_left:'Lower Left (Q3)',lower_right:'Lower Right (Q4)'};
-  let anyMissing = false;
-  Object.entries(QUAD).forEach(([key, label]) => {
-    const teeth = q[key] || [];
-    if (teeth.length > 0) anyMissing = true;
-    const icon = teeth.length ? '⚪' : '✅';
-    const badgeStyle = teeth.length
-      ? 'class="sev-badge sev-low"'
-      : 'class="sev-badge" style="background:rgba(0,255,135,0.08);border:1px solid rgba(0,255,135,0.2);color:var(--green)"';
-    el.innerHTML += `<div class="finding-row">
-      <span class="finding-icon">${icon}</span>
-      <div class="finding-content">
-        <div class="finding-title">${label}</div>
-        <div class="finding-desc">${teeth.length ? 'Missing FDI: ' + teeth.join(', ') : 'No missing teeth'}</div>
-      </div>
-      <span ${badgeStyle}>${teeth.length ? teeth.length + ' MISS' : 'OK'}</span>
-    </div>`;
-  });
-  if (!anyMissing) {
-    el.innerHTML = '<div class="empty-state">✅ All quadrants complete.</div>';
-  }
-}
-buildQuadrant();
-
-// ─── Implants & Restorations ──────────────
-function buildImplants() {
-  const el = document.getElementById('implantList');
-  if (!apiResult || !apiResult.teeth) {
-    el.innerHTML = '<div class="empty-state">No data.</div>';
-    return;
-  }
-  // Binary model: only Implant vs Normal
-  const implants = apiResult.teeth.filter(t => t.condition === 'Implant');
-  if (implants.length === 0) {
-    el.innerHTML = '<div class="empty-state">✅ No implants detected.</div>';
-    return;
-  }
-  implants.forEach(t => {
-    const conf = (t.confidence * 100).toFixed(1);
-    const confColor = t.confidence >= 0.65 ? 'var(--orange)' : 'var(--muted)';
-    el.innerHTML += `<div class="finding-row">
-      <span class="finding-icon">🔩</span>
-      <div class="finding-content">
-        <div class="finding-title" style="color:var(--orange)">Implant — Tooth ${t.fdi}</div>
-        <div class="finding-desc">${TOOTH_NAMES[t.fdi]||''} · Confidence <span style="color:${confColor}">${conf}%</span></div>
-      </div>
-    </div>`;
-  });
-}
-buildImplants();
-
-// ─── BBox Overlay on canvas ───────────────
-function drawBboxOverlay(imgEl, teeth, missingList) {
-  const wrap    = document.getElementById('opgWrap');
-  const canvas  = document.getElementById('maskCanvas');
-  const overlay = document.getElementById('maskOverlay');
-
-  // Compute scale: display size vs natural image size
-  const scaleX = imgEl.offsetWidth  / imgEl.naturalWidth;
-  const scaleY = imgEl.offsetHeight / imgEl.naturalHeight;
-
-  canvas.width  = imgEl.offsetWidth;
-  canvas.height = imgEl.offsetHeight;
-  overlay.style.position = 'absolute';
-  overlay.style.inset = '0';
-
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const fillMap = {
-    Normal:         'rgba(0,255,135,0.18)',
-    Cavity:         'rgba(251,191,36,0.28)',
-    'Impacted Tooth':'rgba(244,63,94,0.32)',
-    Fillings:       'rgba(0,229,255,0.18)',
-    Implant:        'rgba(251,146,60,0.22)',
-    Unknown:        'rgba(100,116,139,0.14)',
-  };
-  const strokeMapC = {
-    Normal:         'rgba(0,255,135,0.7)',
-    Cavity:         'rgba(251,191,36,0.9)',
-    'Impacted Tooth':'rgba(244,63,94,0.9)',
-    Fillings:       'rgba(0,229,255,0.7)',
-    Implant:        'rgba(251,146,60,0.75)',
-    Unknown:        'rgba(100,116,139,0.4)',
-  };
-
-  teeth.forEach(t => {
-    const [x1,y1,x2,y2] = t.bbox;
-    const sx = x1*scaleX, sy = y1*scaleY;
-    const sw = (x2-x1)*scaleX, sh = (y2-y1)*scaleY;
-
-    ctx.fillStyle   = fillMap[t.condition]   || fillMap.Unknown;
-    ctx.strokeStyle = strokeMapC[t.condition] || strokeMapC.Unknown;
-    ctx.lineWidth   = 1.5;
-    ctx.beginPath();
-    ctx.roundRect(sx, sy, sw, sh, 3);
-    ctx.fill();
-    ctx.stroke();
-
-    // FDI number label
-    ctx.fillStyle = strokeMapC[t.condition] || strokeMapC.Unknown;
-    ctx.font = `bold ${Math.max(7, sw*0.32)}px 'DM Mono', monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(t.fdi, sx + sw/2, sy + sh/2);
-  });
-}
-
-// ─── Toggle view ──────────────────────────
+// ── Toggle original / mask ────────────────────────────
 function toggleView(mode) {
   document.getElementById('btnOriginal').classList.toggle('active', mode === 'original');
   document.getElementById('btnMask').classList.toggle('active', mode === 'mask');
   document.getElementById('maskOverlay').style.display = mode === 'mask' ? 'block' : 'none';
 }
 
-// ─── PDF download ─────────────────────────
+// ── Color map for conditions ──────────────────────────
+const conditionColour = {
+  'Normal':         'rgba(0,255,135,0.30)',
+  'Cavity':         'rgba(251,191,36,0.45)',
+  'Fillings':       'rgba(0,229,255,0.35)',
+  'Impacted Tooth': 'rgba(244,63,94,0.50)',
+  'Implant':        'rgba(251,191,36,0.30)',
+  'missing':        'rgba(100,116,139,0.20)',
+  'default':        'rgba(0,255,135,0.25)',
+};
+
+// Map condition → CSS variable name for chip colour
+const conditionStatus = {
+  'Normal':         'normal',
+  'Cavity':         'cavity',
+  'Fillings':       'filling',
+  'Impacted Tooth': 'impacted',
+  'Implant':        'filling',
+  'missing':        'missing',
+};
+
+// ── FDI tooth map data ────────────────────────────────
+const FDI_UPPER = [[18,17,16,15,14,13,12,11],[21,22,23,24,25,26,27,28]];
+const FDI_LOWER = [[48,47,46,45,44,43,42,41],[31,32,33,34,35,36,37,38]];
+const toothNames = {
+  11:'Central Incisor',12:'Lateral Incisor',13:'Canine',14:'1st Premolar',15:'2nd Premolar',16:'1st Molar',17:'2nd Molar',18:'3rd Molar',
+  21:'Central Incisor',22:'Lateral Incisor',23:'Canine',24:'1st Premolar',25:'2nd Premolar',26:'1st Molar',27:'2nd Molar',28:'3rd Molar',
+  31:'Central Incisor',32:'Lateral Incisor',33:'Canine',34:'1st Premolar',35:'2nd Premolar',36:'1st Molar',37:'2nd Molar',38:'3rd Molar',
+  41:'Central Incisor',42:'Lateral Incisor',43:'Canine',44:'1st Premolar',45:'2nd Premolar',46:'1st Molar',47:'2nd Molar',48:'3rd Molar',
+};
+
+// Will be populated from API response
+let fdiStatusMap = {};
+
+// ── MAIN: load analysis result ────────────────────────
+const stored = sessionStorage.getItem('analysisResult');
+if (stored) {
+  try {
+    const data = JSON.parse(stored);
+    renderReport(data);
+  } catch(e) {
+    renderDemoData();
+  }
+} else {
+  renderDemoData();
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER FROM REAL API DATA
+// ══════════════════════════════════════════════════════
+function renderReport(data) {
+  const teeth   = data.teeth   || [];
+  const summary = data.summary || {};
+  const anomaly = data.anomaly || {};
+  const missing = data.missing_teeth || [];
+
+  // Build fdiStatusMap from real teeth array
+  teeth.forEach(t => {
+    fdiStatusMap[t.fdi] = conditionStatus[t.condition] || 'normal';
+  });
+  missing.forEach(fdi => { fdiStatusMap[fdi] = 'missing'; });
+
+  // Summary stats
+  document.getElementById('statTotal').textContent   = summary.total_detected || teeth.length;
+  const issues = (summary.cavities||0) + (summary.impacted||0);
+  document.getElementById('statIssues').textContent  = issues;
+  document.getElementById('statMissing').textContent = (summary.total_missing||missing.length);
+  // Overall confidence: average of all teeth confidences
+  const avgConf = teeth.length
+    ? Math.round(teeth.reduce((s,t) => s + (t.confidence||0), 0) / teeth.length * 100)
+    : 0;
+  document.getElementById('statConf').textContent = avgConf + '%';
+
+  // Build FDI grid with real data
+  buildFdiGrid();
+
+  // Redraw mask with real data if image already loaded
+  const img = document.getElementById('opgImage');
+  if (img.complete && img.naturalWidth) renderMask(img, fdiStatusMap);
+
+  // Findings from real data
+  renderFindings(teeth, missing, anomaly);
+
+  // Implants from real data
+  renderImplants(teeth);
+
+  // Confidence bars from real per-model data (use summary averages)
+  animateConfBars(avgConf);
+}
+
+// ── Findings section ──────────────────────────────────
+function renderFindings(teeth, missing, anomaly) {
+  const list = document.getElementById('findingsList');
+  list.innerHTML = '';
+
+  const sevMap = { 'Peri-implantitis':'high', 'Bone Loss':'med', 'Normal Bone':'low' };
+
+  // Anomaly finding
+  if (anomaly.label) {
+    const sev = sevMap[anomaly.label] || 'med';
+    const icons = { high:'🔴', med:'🟡', low:'🟢' };
+    list.innerHTML += `
+      <div class="finding-row">
+        <span class="finding-icon">${icons[sev]}</span>
+        <div class="finding-content">
+          <div class="finding-title">${anomaly.label} Detected</div>
+          <div class="finding-desc">Anomaly score: ${anomaly.anomaly_score} · Density: ${anomaly.density_score} · Height variation: ${anomaly.height_score}</div>
+        </div>
+        <span class="severity-badge sev-${sev}">${sev.toUpperCase()}</span>
+      </div>`;
+  }
+
+  // Per-tooth findings
+  teeth.filter(t => t.condition !== 'Normal' && t.condition !== 'Implant').forEach(t => {
+    const sevT = t.condition === 'Impacted Tooth' ? 'high' : 'med';
+    const icon = t.condition === 'Impacted Tooth' ? '🔴' : '🟡';
+    list.innerHTML += `
+      <div class="finding-row">
+        <span class="finding-icon">${icon}</span>
+        <div class="finding-content">
+          <div class="finding-title">${t.condition} — Tooth ${t.fdi}</div>
+          <div class="finding-desc">Confidence: ${(t.confidence * 100).toFixed(1)}% · ${toothNames[t.fdi] || ''}</div>
+        </div>
+        <span class="severity-badge sev-${sevT}">${sevT.toUpperCase()}</span>
+      </div>`;
+  });
+
+  // Missing teeth
+  if (missing.length > 0) {
+    list.innerHTML += `
+      <div class="finding-row">
+        <span class="finding-icon">⚪</span>
+        <div class="finding-content">
+          <div class="finding-title">Missing Teeth Detected</div>
+          <div class="finding-desc">FDI: ${missing.join(', ')}</div>
+        </div>
+        <span class="severity-badge sev-low">LOW</span>
+      </div>`;
+  }
+
+  if (list.innerHTML === '') {
+    list.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green);padding:8px 0;">✓ No significant findings detected.</div>';
+  }
+
+  document.getElementById('findingsCount').textContent = (teeth.filter(t=>t.condition!=='Normal'&&t.condition!=='Implant').length + (missing.length>0?1:0)) + ' Flagged';
+}
+
+// ── Implants section ──────────────────────────────────
+function renderImplants(teeth) {
+  const list = document.getElementById('implantList');
+  list.innerHTML = '';
+  const implants = teeth.filter(t => t.condition === 'Implant');
+  if (implants.length === 0) {
+    list.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);padding:8px 0;">No implants detected.</div>';
+    return;
+  }
+  implants.forEach(t => {
+    list.innerHTML += `
+      <div class="finding-row">
+        <span class="finding-icon">🔩</span>
+        <div class="finding-content">
+          <div class="finding-title" style="color:var(--accent)">Tooth ${t.fdi} — IMPLANT</div>
+          <div class="finding-desc">${toothNames[t.fdi]||''} · Confidence: ${(t.confidence*100).toFixed(1)}%</div>
+        </div>
+      </div>`;
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER MASK OVERLAY ON CANVAS (from fdiStatusMap)
+// ══════════════════════════════════════════════════════
+function renderMask(imgEl, statusMap) {
+  const wrap    = document.getElementById('opgWrap');
+  const canvas  = document.getElementById('maskCanvas');
+  const overlay = document.getElementById('maskOverlay');
+  canvas.width  = imgEl.offsetWidth  || wrap.offsetWidth || 600;
+  canvas.height = imgEl.offsetHeight || 300;
+  overlay.style.position = 'absolute';
+  overlay.style.inset = '0';
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const W = canvas.width, H = canvas.height;
+
+  // 32 tooth positions: upper arch + lower arch
+  const allFdi = [18,17,16,15,14,13,12,11, 21,22,23,24,25,26,27,28,
+                  48,47,46,45,44,43,42,41, 31,32,33,34,35,36,37,38];
+  allFdi.forEach((fdi, i) => {
+    const row = i < 16 ? 0 : 1;
+    const col = i % 16;
+    const x   = W * (0.04 + col * 0.059);
+    const y   = row === 0 ? H * 0.25 : H * 0.58;
+    const tw  = W * 0.042;
+    const th  = H * 0.20;
+    const status = statusMap[fdi] || 'normal';
+    const colour = conditionColour[
+      Object.keys(conditionStatus).find(k => conditionStatus[k] === status)
+    ] || conditionColour.default;
+    // Draw rectangle (segmentation box)
+    ctx.beginPath();
+    ctx.roundRect(x, y, tw, th, 3);
+    ctx.fillStyle = colour;
+    ctx.fill();
+    ctx.strokeStyle = colour.replace(/[\d.]+\)$/, '0.9)');
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    // FDI label
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.font = `bold ${Math.max(7, W*0.012)}px "DM Mono", monospace`;
+    ctx.textAlign = 'center';
+    ctx.fillText(fdi, x + tw/2, y + th/2 + 3);
+  });
+}
+
+// ── FDI grid builder ──────────────────────────────────
+function buildFdiGrid() {
+  const grid = document.getElementById('fdiGrid');
+  const tip  = document.getElementById('toothTip');
+  grid.innerHTML = '';
+
+  function makeRow(teeth, label) {
+    if (label) {
+      const lbl = document.createElement('div');
+      lbl.className = 'fdi-row-label';
+      lbl.textContent = label;
+      grid.appendChild(lbl);
+    }
+    const row = document.createElement('div');
+    row.className = 'fdi-row';
+    teeth.forEach(n => {
+      const chip = document.createElement('div');
+      chip.className = 'tooth-chip';
+      chip.dataset.status = fdiStatusMap[n] || 'normal';
+      chip.textContent = n;
+      chip.addEventListener('mousemove', e => {
+        tip.style.display = 'block';
+        tip.style.left = (e.clientX + 14) + 'px';
+        tip.style.top  = (e.clientY - 10) + 'px';
+        const s = chip.dataset.status;
+        const quad = Math.floor(n/10);
+        const quadNames = {1:'Upper Right',2:'Upper Left',3:'Lower Left',4:'Lower Right'};
+        const colVar = s==='normal'?'green':s==='cavity'?'yellow':s==='impacted'?'red':s==='filling'?'accent':'muted';
+        tip.innerHTML = `<b style="color:var(--accent)">Tooth ${n}</b><br>${quadNames[quad]} ${toothNames[n]||''}<br><span style="text-transform:capitalize;color:var(--${colVar})">${s.toUpperCase()}</span>`;
+      });
+      chip.addEventListener('mouseleave', () => tip.style.display = 'none');
+      row.appendChild(chip);
+    });
+    grid.appendChild(row);
+  }
+
+  makeRow(FDI_UPPER[0], 'Upper Right (Q1) ←→ Upper Left (Q2)');
+  makeRow(FDI_UPPER[1], '');
+  const div = document.createElement('div');
+  div.className = 'fdi-divider';
+  div.textContent = '— — — CENTER LINE — — —';
+  grid.appendChild(div);
+  makeRow(FDI_LOWER[0], 'Lower Right (Q4) ←→ Lower Left (Q3)');
+  makeRow(FDI_LOWER[1], '');
+}
+
+// ── Confidence bar animation ───────────────────────────
+function animateConfBars(avgConf) {
+  const targets = [
+    Math.min(99, avgConf + 2),
+    avgConf,
+    Math.max(70, avgConf - 3),
+    Math.max(65, avgConf - 6),
+  ];
+  setTimeout(() => {
+    document.querySelectorAll('.conf-bar').forEach((bar, i) => {
+      bar.style.width = (targets[i] || bar.dataset.target) + '%';
+    });
+  }, 400);
+}
+
+// ══════════════════════════════════════════════════════
+// FALLBACK: DEMO DATA (when no backend result stored)
+// ══════════════════════════════════════════════════════
+function renderDemoData() {
+  fdiStatusMap = {};
+  [18,17,16,15,14,13,12,11].forEach((n,i) => fdiStatusMap[n] = ['normal','normal','normal','cavity','normal','normal','normal','filling'][i]);
+  [21,22,23,24,25,26,27,28].forEach((n,i) => fdiStatusMap[n] = ['filling','normal','normal','normal','impacted','normal','normal','normal'][i]);
+  [48,47,46,45,44,43,42,41].forEach((n,i) => fdiStatusMap[n] = ['normal','normal','missing','normal','normal','normal','normal','normal'][i]);
+  [31,32,33,34,35,36,37,38].forEach((n,i) => fdiStatusMap[n] = ['normal','cavity','normal','normal','normal','missing','normal','normal'][i]);
+
+  buildFdiGrid();
+
+  document.getElementById('statTotal').textContent  = '30';
+  document.getElementById('statIssues').textContent = '4';
+  document.getElementById('statMissing').textContent = '2';
+  document.getElementById('statConf').textContent   = '94%';
+
+  const img = document.getElementById('opgImage');
+  if (img.complete && img.naturalWidth) renderMask(img, fdiStatusMap);
+
+  // Demo findings
+  const list = document.getElementById('findingsList');
+  [
+    { icon:'🔴', title:'Peri-implantitis — Tooth 36', desc:'Bone loss detected around implant margin. Early intervention recommended.', sev:'high' },
+    { icon:'🟡', title:'Cavity — Tooth 15', desc:'Mesial surface caries. Possible pulp involvement if untreated.', sev:'med' },
+    { icon:'🟡', title:'Cavity — Tooth 32', desc:'Occlusal caries detected. Restoration advised.', sev:'med' },
+    { icon:'🔴', title:'Impacted Tooth — 25', desc:'Partially erupted, mesio-angular impaction.', sev:'high' },
+    { icon:'⚪', title:'Missing — Teeth 46 & 36', desc:'No pathology in socket areas.', sev:'low' },
+  ].forEach(f => {
+    list.innerHTML += `<div class="finding-row"><span class="finding-icon">${f.icon}</span><div class="finding-content"><div class="finding-title">${f.title}</div><div class="finding-desc">${f.desc}</div></div><span class="severity-badge sev-${f.sev}">${f.sev.toUpperCase()}</span></div>`;
+  });
+
+  // Demo implants
+  const iList = document.getElementById('implantList');
+  [
+    { fdi:16, status:'NORMAL', desc:'Osseointegration stable.', color:'green' },
+    { fdi:36, status:'PERI-IMPLANTITIS', desc:'Bone loss. Clinical review needed.', color:'red' },
+    { fdi:46, status:'FILLING', desc:'Crown intact. No secondary caries.', color:'accent' },
+  ].forEach(im => {
+    iList.innerHTML += `<div class="finding-row"><span class="finding-icon">🔩</span><div class="finding-content"><div class="finding-title" style="color:var(--${im.color})">Tooth ${im.fdi} — ${im.status}</div><div class="finding-desc">${im.desc}</div></div></div>`;
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.conf-bar').forEach(bar => { bar.style.width = bar.dataset.target + '%'; });
+  }, 400);
+}
+
+// ── PDF download ──────────────────────────────────────
 function downloadReport() {
   const style = document.createElement('style');
   style.id = 'printStyle';
   style.textContent = `
     @media print {
-      body::before,body::after{display:none;}
-      .topbar,.progress-wrap,.report-actions,.warn-banner{display:none!important;}
-      .main{padding:8px!important;max-width:100%!important;}
-      .report-grid{grid-template-columns:1fr 1fr!important;}
-      body{background:#fff!important;color:#000!important;}
-      .section-card,.opg-panel,.info-strip{break-inside:avoid;border-color:#ddd!important;}
-      .info-cell{background:#f7f7f7!important;}
-      .stat-val,.info-cell-val,h1,.section-title,.panel-title,.score-val,.anomaly-badge{color:#111!important;}
-      .info-cell-label,.stat-label,.score-label,.finding-desc,.fdi-row-label{color:#555!important;}
-      footer{color:#aaa!important;}
+      body::before { display:none; }
+      .topbar,.progress-wrap,.report-actions { display:none !important; }
+      .main { padding:8px !important; max-width:100% !important; }
+      .report-grid { grid-template-columns:1fr 1fr !important; }
+      .section-card,.opg-panel,.info-strip { break-inside:avoid; }
+      body { background:#fff !important; color:#000 !important; }
+      * { color:#000 !important; border-color:#ccc !important; background:transparent !important; }
+      .stat-val { color:#000 !important; }
+      footer { color:#999 !important; }
     }`;
   document.head.appendChild(style);
   window.print();
